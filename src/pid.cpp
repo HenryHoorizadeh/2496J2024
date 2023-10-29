@@ -25,7 +25,7 @@ double currentPower; // temp
 
 double prevError; //how is this specified/calculated??
 double h;
-
+//hi
 int integral;
 int derivative;
 
@@ -79,20 +79,36 @@ double calcPID(double target, double input, int integralKi, int maxIntegral, boo
     
     derivative = error - prevError;
 
-    power = (vKp * error) + (vKi * integral) - (vKd * derivative);
+    power = (vKp * error) + (vKi * integral) + (vKd * derivative);
 
     return power;
 }
 
 //driving straight
 void driveStraight(int target) {
-    int timeout = 3500;
+    int timeout = 5000;
     if (abs(target) < 800) {
         timeout = 2700;
     } else {
-        timeout = 3500;
+        timeout = 5000;
     }
+    imu.tare();
 
+    if (target == 1400){
+        timeout = 1200;
+    }
+    
+    if (target == -1200){
+        timeout = 1000;
+    } 
+
+    if (target == -1100){
+        timeout = 500;
+    } 
+    
+    if (target == -1400){
+        timeout = 1100;
+    }
     // if (target < 0){
     //      setConstants(53, 0.4, 878); //0.4
     // } else{
@@ -118,7 +134,7 @@ void driveStraight(int target) {
      
     
         // temp cata reset
-        if (catalim.get_value() == false) CATA.move(-127);
+        if (catalim.get_value() == false) CATA.move(127);
         else CATA.move(0);
 
         encoderAvg = (LB.get_position() + RB.get_position()) / 2;
@@ -126,9 +142,9 @@ void driveStraight(int target) {
 
         
         //heading correction
-        if(init_heading > 180) {
-            init_heading = (360 - init_heading);
-        }
+        // if(init_heading > 180) {
+        //     init_heading = (360 - init_heading);
+        // }
 
         if(imu.get_heading() < 180) {
             heading_error = init_heading - imu.get_heading();
@@ -137,7 +153,7 @@ void driveStraight(int target) {
             heading_error = ((360 - imu.get_heading()) - init_heading);
         }
 
-        heading_error = heading_error * 5;
+        heading_error = heading_error * 7;
 
         if(voltage > 127){
             voltage = 127;
@@ -146,9 +162,9 @@ void driveStraight(int target) {
         }
 
         chasMove( (voltage + heading_error ), (voltage + heading_error), (voltage + heading_error), (voltage - heading_error), (voltage - heading_error), (voltage - heading_error));
-        if (abs(target - encoderAvg) <= 3) count++;
+        if (abs(target - encoderAvg) <= 4) count++;
         if (count >= 20 || time > timeout){
-            CATA.move(0);
+         //   CATA.move(0);
             break;
         } 
 
@@ -157,10 +173,11 @@ void driveStraight(int target) {
         if (time % 100 == 0) con.clear(); else if (time % 50 == 0) {
 			cycle++;
             if ((cycle+1) % 3 == 0) con.print(0, 0, "ERROR: %2f", encoderAvg); 
-            if ((cycle+2) % 3 == 0) con.print(1, 0, "Volatge: %2f", voltage); //autstr //%s
+            if ((cycle+2) % 3 == 0) con.print(1, 0, "Volatge: %2f", heading_error); //autstr //%s
             if ((cycle+3) % 3 == 0) con.print(2, 0, "Temp: %f", 0.001);
 		}
         time += 10;
+        //hi
     }
     LF.brake();
     LM.brake();
@@ -178,7 +195,29 @@ void driveTurn(int target) { //target is inputted in autons
     int time = 0;
     int cycle = 0;
 
+    if (abs(target) < 10){
+    setConstants(7.325, 0.025, 90);     
+    } else if (abs(target) < 25){
+    setConstants(8, 0, 70);
+    } else if (abs(target) <= 39){
+    setConstants(8, 0.001, 91); //6.75 //88
+    } else if (abs(target) < 45){
+    setConstants(8, 0.001, 89);
+    } else if (abs(target) < 55){
+    setConstants(7.1, 0.001, 65);
+    } else if (abs(target) < 70){
+    setConstants(8.75, 0.025, 110);
+    } else if (abs(target) < 95){
     setConstants(TURN_KP, TURN_KI, TURN_KD);
+    } else if(abs(target) < 115) {
+    setConstants(7.325, 0.025, 90);
+    } else if(abs(target) < 125){
+    setConstants(7.5, 0.025, 95);
+    } else if(abs(target) < 155){
+    setConstants(7.75, 0.025, 130);
+    } else if(abs(target) < 180){
+    setConstants(8.1, 0.025, 160);
+    }
     
     int timeout = 2100;
 
@@ -192,12 +231,14 @@ void driveTurn(int target) { //target is inputted in autons
 
     while(true) {
         // temp cata reset
-        if (catalim.get_value() == false) CATA.move(-127);
+        if (catalim.get_value() == false) CATA.move(127);
         else CATA.move(0);
 
         position = imu.get_heading(); //this is where the units are set to be degrees
+
+    
         if (position > 180) {
-            position = ((360 - position) * -1);
+            position = ((360 - position) * -1 );
         }
 
         voltage = calcPID(target, position, TURN_INTEGRAL_KI, TURN_MAX_INTEGRAL, false);
@@ -205,10 +246,11 @@ void driveTurn(int target) { //target is inputted in autons
         
         chasMove(voltage, voltage, voltage, -voltage, -voltage, -voltage);
         
-        if (abs(target - position) <= 0.4) count++; //0.35
+        if (abs(target - position) <= 0.5) count++; //0.35
         if (count >= 20 || time > timeout) {
-            imu.tare_heading();
-            break;
+           imu.tare_heading();
+           break; 
+           
         }
 
         

@@ -21,11 +21,12 @@ extern void driveShoot(int target);
 extern void chasMove2(int voltageLF, int voltageLB, int voltageLM, int voltageRF, int voltageRB, int voltageRM);
 extern float error;
 extern float viewvol;
+extern double heading_error;
 
 //tune straight constants here: setConstants(STRAIGHT_KP, STRAIGHT_KI, STRAIGHT_KD);
-#define STRAIGHT_KP 0.58 * 1 // 0.7 0.18 pis 0.535
-#define STRAIGHT_KI 0.28 // 0.17 0.1 0
-#define STRAIGHT_KD 7.6 * 1 // 10 8 0.4
+#define STRAIGHT_KP 1.09 // 
+#define STRAIGHT_KI 0.01 // 
+#define STRAIGHT_KD 8.15  // 
 
 //tune straight integral-specific here: voltage = calcPID(target, encoderAvg, STRAIGHT_INTEGRAL_KI, STRAIGHT_MAX_INTEGRAL);
 #define STRAIGHT_INTEGRAL_KI 40
@@ -33,12 +34,12 @@ extern float viewvol;
 
 
 //tune turn constants here: setConstants(TURN_KP, TURN_KI, TURN_KD);
-#define TURN_KP 13 * 0.68 //12 23 //21.5 //12
-#define TURN_KI 0.1 //0,05 0.07 // 0.34
-#define TURN_KD 100 * 0.65 //80 //197
+#define TURN_KP 7.325 //5.25//8.75
+#define TURN_KI 0.025 //0.125//0.115
+#define TURN_KD 70 //38 //105
 
 //tune turn integral-specific here: voltage = calcPID(target, position, TURN_INTEGRAL_KI, TURN_MAX_INTEGRAL);
-#define TURN_INTEGRAL_KI 15
+#define TURN_INTEGRAL_KI 30
 #define TURN_MAX_INTEGRAL 25
 
 #endif

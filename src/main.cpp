@@ -66,13 +66,13 @@ void disabled() {}
  * starts.
  */
 
-int atn = 2;
+int atn = 0;
 string autstr;
 
 void competition_initialize() {
     while(true) {
-      if(selec.get_value() == 1) {
-        atn ++;
+      if(selec.get_value() == true) {
+        atn ++;  
         delay(350);
       }
       
@@ -81,19 +81,19 @@ void competition_initialize() {
         con.print(0, 0, "Aut 0: %s", autstr);
       }
       else if (atn == 1) {
-        autstr = "Auton2";
+        autstr = "NONE";
         con.print(0, 0, "Aut 1: %s", autstr);
       }
       else if (atn == 2) {
-        autstr = "Auton3";
+        autstr = "Auton2";
         con.print(0, 0, "Aut 2: %s", autstr);
       }
       else if (atn == 3) {
-       autstr = "Auton4";
+       autstr = "Auton3";
         con.print(0, 0, "Aut 3: %s", autstr);
       }
       else if (atn == 4) {
-       autstr = "Auton5";
+       autstr = "Auton4";
         con.print(0, 0, "Aut 4: %s", autstr);
       }
       else if (atn == 5) {
@@ -125,25 +125,30 @@ int wait = 900;
 int wait2 = 250;
 
 bool wingsToggle = false;
-bool expandToggle = false;
+bool awpToggle = false;
 bool deployExpansion = false;
 
 bool extenderToggle = false;
+bool ccon = true;
+bool slow = true;
+int speed = 0;
 
 bool rollerOn = false;
 
 void opcontrol() {
   int time = 0;
-  bool arcToggle = false;
-  bool tankToggle = true;
+  bool arcToggle = true;
+  bool tankToggle = false;
 
   //ONLY for Pressed/Primed CataControl
   bool cataPressed;
   bool cataPrimed;
+  CATA.tare_position();
 
 	while (true) {
     //printing stuff
 		double chasstempC = ((RF.get_temperature() + RB.get_temperature() + LF.get_temperature() + LB.get_temperature())/4);
+    double catat = (CATA.get_temperature());
     double catatempC = CATA.get_temperature();
 		
     if (time % 100 == 0) con.clear();
@@ -151,10 +156,13 @@ void opcontrol() {
     else if (time % 50 == 0) {
 			cycle++;
       // if (cycle % 3 == 0) con.print(0, 0, "Aut: %s", ); //autstr //%s
-      if ((cycle+1) % 3 == 0) con.print(0, 0, "ERROR: %f", error); 
-      if ((cycle+2) % 3 == 0) con.print(1, 0, "Voltage: %f", viewvol); //autstr //%s
+      if ((cycle+1) % 3 == 0) con.print(0, 0, "ERROR: %s", autstr); 
+      if ((cycle+2) % 3 == 0) con.print(1, 0, "Voltage: %f", catat); //autstr //%s float(imu.get_heading())
 		  if ((cycle+3) % 3 == 0) con.print(2, 0, "Temp: %f", chasstempC);
 	  }
+
+
+     
 
 		//chassis arcade drive
 		int power = con.get_analog(ANALOG_LEFT_Y); //power is defined as forward or backward
@@ -198,7 +206,7 @@ void opcontrol() {
       autstr = "Skills";
     }
     if (atn == 1) {
-      autstr = "Auton1";
+      autstr = "NONE";
     }
     else if (atn == 2) {
       autstr = "Auton2";
@@ -222,22 +230,105 @@ void opcontrol() {
 
     //intake
 		if (con.get_digital(E_CONTROLLER_DIGITAL_R1)) {
-			INTAKE.move(127);
+			INTAKE.move(-127);
 		}
 		else if (con.get_digital(E_CONTROLLER_DIGITAL_R2)) {
-			INTAKE.move(-127);
+			INTAKE.move(127);
 		}
 		else {
 			INTAKE.move(0);
 		}
 
-    //Simple Cata Limit Control
-    if(catalim.get_value() == false || con.get_digital(E_CONTROLLER_DIGITAL_DOWN)){
-      CATA.move(127);
+
+
+//cata roto sensor 
+if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_A)){
+    ccon = !ccon;
+  }  
+if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)){
+    slow = !slow;
+  }
+
+if (slow){
+  speed = 127;
+} else{
+  speed = 110;
+}
+  if(ccon){
+    if(con.get_digital(E_CONTROLLER_DIGITAL_L2)){
+      CATA.move(speed);
     } else {
       CATA.move(0);
     }
+  } else {
+    if(con.get_digital(E_CONTROLLER_DIGITAL_L2) ||  catalim.get_value() == false){
+      CATA.move(speed);
+    } else {
+      CATA.move(0);
+    }
+  }
 
+  
+
+    //Simple single button 
+  // if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_A)){
+  //   slow = !slow;
+  // }
+
+  // if(CATA.get_position() > 360){
+  //   CATA.tare_position();
+  // }
+
+///CONTROL1
+
+  // if(slow){
+  //   // if(((CATA.get_position() < 330) && (CATA.get_position() > 30)) || con.get_digital(E_CONTROLLER_DIGITAL_L2)){
+  //   //   if ((CATA.get_position() < 200) && (CATA.get_position() > 30)){
+  //   //     CATA.move(70);
+  //   //   } else {
+  //   //     CATA.move(127);
+  //   //   }
+  //   // } else {
+  //   //   CATA.move(0);
+  //   // }
+  // } else {
+  //   float pos = CATA.get_position();
+  //   if(((CATA.get_position() < 320) && (CATA.get_position() > 30)) || con.get_digital(E_CONTROLLER_DIGITAL_L2)){
+  //     if ((CATA.get_position() < 200) && (CATA.get_position() > 30)){
+  //       CATA.move(127);
+  //     } else {
+  //       CATA.move(127);
+  //     }
+  //   } else {
+  //     CATA.move(0);
+  //   }
+  // }
+ 
+///CONTROL2
+// if(slow){
+//     if(CATA.get_position() < 330 || con.get_digital(E_CONTROLLER_DIGITAL_L2)){
+//       CATA.move(127);
+//     } else {
+//       CATA.move(0);
+//     }
+//   } else {
+//     if(CATA.get_position() < 330 || con.get_digital(E_CONTROLLER_DIGITAL_L2)){
+//       CATA.move(60);
+//     } else {
+//       CATA.move(0);
+//     }
+//   }
+
+
+//old lim control
+// if(catalim.get_value() == false || con.get_digital(E_CONTROLLER_DIGITAL_L2)){
+//       CATA.move(127);
+//     } else {
+//       CATA.move(0);
+//     }
+//   } else
+
+//hi
   ////CATA Primed/Pressed Control
   //   cataPrimed = catalim.get_value();
   //   if(con.get_digital(E_CONTROLLER_DIGITAL_DOWN)){
@@ -262,22 +353,28 @@ void opcontrol() {
     
     //pid tester
 		if (con.get_digital(E_CONTROLLER_DIGITAL_X)) {
-      driveStraight(1000);
-      //driveTurn(90);
+      //driveStraight(150);
+      driveTurn(-55);
     }
 
     //Wings
-		if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)) {
-			if (wingsToggle == false) {
+		if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
+			wingsToggle = !wingsToggle;
+		}
+    if (wingsToggle == false) {
 				wing1.set_value(false);
-        wing2.set_value(false);
-				wingsToggle = true;
 			} else {
         wing1.set_value(true);
-        wing2.set_value(true);
-        wingsToggle = false;
 			}
+   
+   if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
+			awpToggle = !awpToggle;
 		}
+    if (awpToggle == false) {
+				awp.set_value(false);
+			} else {
+        awp.set_value(true);
+			}
    
     //reset all motor encoders
 		if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)) {

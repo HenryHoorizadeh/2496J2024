@@ -8,16 +8,16 @@
 
 
 #define OPTICAL_PORT 4
-#define IMU_PORT 2
-#define LF_PORT 1
-#define LM_PORT 9
+#define IMU_PORT 18
+#define LF_PORT 6
+#define LM_PORT 4
 #define LB_PORT 8
-#define RF_PORT 10
-#define RM_PORT 11
-#define RB_PORT 12
-#define GPS_PORT 16
-#define CATA_PORT 17
-#define INTAKE_PORT 18 
+#define RF_PORT 5
+#define RM_PORT 16
+#define RB_PORT 10
+#define GPS_PORT 1
+#define CATA_PORT 20
+#define INTAKE_PORT 11
 
 
 pros::Motor LF (LF_PORT, pros::E_MOTOR_GEARSET_06, true);
@@ -28,14 +28,16 @@ pros::Motor RM (RM_PORT, pros::E_MOTOR_GEARSET_06, false);
 pros::Motor RB (RB_PORT, pros::E_MOTOR_GEARSET_06, false);
 
 //intake
-pros::Motor INTAKE (INTAKE_PORT, pros::E_MOTOR_GEARSET_18, true);
+pros::Motor INTAKE (INTAKE_PORT, pros::E_MOTOR_GEARSET_18, false);
 
 //cata
-pros::Motor CATA (CATA_PORT, pros::E_MOTOR_GEARSET_06, true);
+pros::Motor CATA (CATA_PORT, pros::E_MOTOR_GEARSET_06, false);
 
 //angler for intake
 pros::ADIDigitalOut wing1 ('B', false);
 pros::ADIDigitalOut wing2 ('C', false);
+pros::ADIDigitalOut awp ('A', false);
+pros::ADIDigitalOut blocker ('D', false);
 
 //cata limit switch
 pros::ADIDigitalIn catalim ('H');
@@ -44,7 +46,7 @@ pros::ADIDigitalIn catalim ('H');
 pros::ADIDigitalOut extender ('C');
 
 //auton selector
-pros::ADIDigitalIn selec ('A');
+pros::ADIDigitalIn selec ('G');
 
 //sensors
 pros::ADIEncoder encLeft ({{1, 1, 2}, false});

@@ -40,6 +40,8 @@ extern pros::Motor INDEXER;
 //angler
 extern pros::ADIDigitalOut wing1;
 extern pros::ADIDigitalOut wing2;
+extern pros::ADIDigitalOut awp;
+extern pros::ADIDigitalOut blocker;
 
 
 //gps
