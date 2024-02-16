@@ -11,6 +11,10 @@
 //controller
 extern pros::Controller con;
 
+
+extern pros::Rotation liftroto;
+extern pros::Rotation cataroto;
+
 //chassis motors
 extern pros::Motor LF;
 extern pros::Motor LB;
@@ -20,6 +24,7 @@ extern pros::Motor RM;
 extern pros::Motor LM;
 
 //intake
+extern pros::Motor LIFT;
 extern pros::Motor INTAKE;
 
 //cata
@@ -40,8 +45,14 @@ extern pros::Motor INDEXER;
 //angler
 extern pros::ADIDigitalOut wing1;
 extern pros::ADIDigitalOut wing2;
+//extern pros::ADIDigitalOut blocker;
 extern pros::ADIDigitalOut awp;
-extern pros::ADIDigitalOut blocker;
+
+extern pros::ADIDigitalOut liftp;
+extern pros::ADIDigitalOut intakep;
+extern pros::ADIDigitalOut rachet;
+
+
 
 
 //gps

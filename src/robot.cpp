@@ -6,44 +6,68 @@
 #include "robot.h"
 #include "pros/motors.h"
 
+//2496j
+// #define OPTICAL_PORT 4
+// #define IMU_PORT 18
+// #define LF_PORT 6
+// #define LM_PORT 4
+// #define LB_PORT 8
+// #define RF_PORT 5
+// #define RM_PORT 16
+// #define RB_PORT 10
+// #define GPS_PORT 1
+// #define CATA_PORT 20
+// #define INTAKE_PORT 11
 
+
+
+// 2496j
 #define OPTICAL_PORT 4
-#define IMU_PORT 18
-#define LF_PORT 6
-#define LM_PORT 4
-#define LB_PORT 8
-#define RF_PORT 5
-#define RM_PORT 16
-#define RB_PORT 10
-#define GPS_PORT 1
-#define CATA_PORT 20
-#define INTAKE_PORT 11
+#define IMU_PORT 13
+#define LF_PORT 12
+#define LM_PORT 17
+#define LB_PORT 4
+#define RF_PORT 16
+#define RM_PORT 14
+#define RB_PORT 20
+#define GPS_PORT 21
+#define CATA_PORT 7
+#define LIFT_PORT 19
+#define INTAKE_PORT 9
+#define LIFTROTO_PORT 8
+#define CATAROTO_PORT 6
 
+pros::Rotation liftroto(LIFTROTO_PORT);
+pros::Rotation cataroto(CATAROTO_PORT);
 
 pros::Motor LF (LF_PORT, pros::E_MOTOR_GEARSET_06, true);
-pros::Motor LM (LM_PORT, pros::E_MOTOR_GEARSET_06, true);
+pros::Motor LM (LM_PORT, pros::E_MOTOR_GEARSET_06, false);
 pros::Motor LB (LB_PORT, pros::E_MOTOR_GEARSET_06, true);
 pros::Motor RF (RF_PORT, pros::E_MOTOR_GEARSET_06, false);
 pros::Motor RM (RM_PORT, pros::E_MOTOR_GEARSET_06, false);
-pros::Motor RB (RB_PORT, pros::E_MOTOR_GEARSET_06, false);
+pros::Motor RB (RB_PORT, pros::E_MOTOR_GEARSET_06, true);
 
 //intake
-pros::Motor INTAKE (INTAKE_PORT, pros::E_MOTOR_GEARSET_18, false);
+pros::Motor LIFT (LIFT_PORT, pros::E_MOTOR_GEARSET_18, false);
 
 //cata
-pros::Motor CATA (CATA_PORT, pros::E_MOTOR_GEARSET_06, false);
+pros::Motor CATA (CATA_PORT, pros::E_MOTOR_GEARSET_36, false);
+
+pros::Motor INTAKE (INTAKE_PORT, pros::E_MOTOR_GEARSET_06, false);
 
 //angler for intake
-pros::ADIDigitalOut wing1 ('B', false);
-pros::ADIDigitalOut wing2 ('C', false);
-pros::ADIDigitalOut awp ('A', false);
-pros::ADIDigitalOut blocker ('D', false);
+pros::ADIDigitalOut wing1 ('E', false);
+pros::ADIDigitalOut wing2 ('I', false);
+pros::ADIDigitalOut awp ('C', false);
+pros::ADIDigitalOut liftp ('A', true);
+pros::ADIDigitalOut intakep ('D', false);
+pros::ADIDigitalOut rachet ('B', false);
 
 //cata limit switch
 pros::ADIDigitalIn catalim ('H');
 
 //extender
-pros::ADIDigitalOut extender ('C');
+pros::ADIDigitalOut extender ('J');
 
 //auton selector
 pros::ADIDigitalIn selec ('G');

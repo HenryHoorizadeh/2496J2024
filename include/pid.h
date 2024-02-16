@@ -13,20 +13,28 @@ extern void resetEncoders();
 // extern float calcPID(int target, float input, int integralKi, int maxI);
 
 extern void driveStraight(int target);
+extern void setConstants(double kp, double ki, double kd);
+extern double calcPID(double target, double input, int integralKi, int maxIntegral, bool slewOn);
+extern void driveStraight2(int target);
 extern void driveTurn(int target);
+extern void driveTurn2(int target);
 extern void driveAim(int target);
 extern void driveSlow(int target);
 extern void driveSmall(int target);
 extern void driveShoot(int target);
 extern void chasMove2(int voltageLF, int voltageLB, int voltageLM, int voltageRF, int voltageRB, int voltageRM);
+extern void driveArcL(double theta, double radius, int timeout);
+extern void driveArcR(double theta, double radius, int timeout);
+extern int time2;
 extern float error;
 extern float viewvol;
 extern double heading_error;
+extern bool tempre;
 
 //tune straight constants here: setConstants(STRAIGHT_KP, STRAIGHT_KI, STRAIGHT_KD);
-#define STRAIGHT_KP 1.09 // 
-#define STRAIGHT_KI 0.01 // 
-#define STRAIGHT_KD 8.15  // 
+#define STRAIGHT_KP 0.95 // 
+#define STRAIGHT_KI 0.025 // 
+#define STRAIGHT_KD 7.75  // 
 
 //tune straight integral-specific here: voltage = calcPID(target, encoderAvg, STRAIGHT_INTEGRAL_KI, STRAIGHT_MAX_INTEGRAL);
 #define STRAIGHT_INTEGRAL_KI 40
@@ -34,9 +42,9 @@ extern double heading_error;
 
 
 //tune turn constants here: setConstants(TURN_KP, TURN_KI, TURN_KD);
-#define TURN_KP 7.325 //5.25//8.75
-#define TURN_KI 0.025 //0.125//0.115
-#define TURN_KD 70 //38 //105
+#define TURN_KP 8.25 //5.25//8.75
+#define TURN_KI 0 //0.125//0.115
+#define TURN_KD 105 //38 //105 //70
 
 //tune turn integral-specific here: voltage = calcPID(target, position, TURN_INTEGRAL_KI, TURN_MAX_INTEGRAL);
 #define TURN_INTEGRAL_KI 30
