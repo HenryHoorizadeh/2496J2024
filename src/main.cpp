@@ -469,15 +469,21 @@ CATA.set_brake_mode(MOTOR_BRAKE_COAST);
     
     //pid tester
 		if (con.get_digital(E_CONTROLLER_DIGITAL_X)) {
-driveTurn2(-10);
+// driveTurn2(-10);
 
-driveArcR(90, 550, 2500);
+// driveArcR(90, 550, 2500);
 
 
       // driveTurn2(-55);
-      //driveArcR(90, 1000, 10000);
-      //driveStraight(800);
-     //driveTurn2(180);
+      
+      driveStraightC(1000);
+      driveArcLF(180, 500, 10000);
+      // driveArcL(150, 500, 10000);
+      //driveArcLF(150, 500, 10000);
+      //driveStraightC(500);
+       driveArcRF(90, 400, 10000);
+       driveStraightC(1000);
+     //driveTurn2(90);
       // driveTurn2(170);
       // driveTurn2(-170);
 
