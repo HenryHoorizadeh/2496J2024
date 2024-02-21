@@ -66,7 +66,7 @@ void disabled() {}
  * starts.
  */
 
-int atn = 0;
+int atn = 1;
 string autstr;
  
 void competition_initialize() {
@@ -468,21 +468,21 @@ CATA.set_brake_mode(MOTOR_BRAKE_COAST);
 
     
     //pid tester
-		if (con.get_digital(E_CONTROLLER_DIGITAL_X)) {
+		if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) {
 // driveTurn2(-10);
 
 // driveArcR(90, 550, 2500);
 
 
       // driveTurn2(-55);
-      
-      driveStraightC(1000);
-      driveArcLF(180, 500, 10000);
-      // driveArcL(150, 500, 10000);
-      //driveArcLF(150, 500, 10000);
-      //driveStraightC(500);
-       driveArcRF(90, 400, 10000);
-       driveStraightC(1000);
+      driveStraight2(-2000);
+      // driveStraightC(1000);
+      // driveArcLF(180, 500, 10000);
+      // // driveArcL(150, 500, 10000);
+      // //driveArcLF(150, 500, 10000);
+      // //driveStraightC(500);
+      //  driveArcRF(90, 400, 10000);
+      //  driveStraightC(1000);
      //driveTurn2(90);
       // driveTurn2(170);
       // driveTurn2(-170);
@@ -570,8 +570,10 @@ if(ccon){
     // }
     if (wingsToggle == false) {
 				wing1.set_value(false);
+        wing2.set_value(false);
 			} else {
         wing1.set_value(true);
+        wing2.set_value(true);
 			}
 
 

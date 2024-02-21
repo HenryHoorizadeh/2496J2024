@@ -57,14 +57,14 @@ pros::Motor INTAKE (INTAKE_PORT, pros::E_MOTOR_GEARSET_06, false);
 
 //angler for intake
 pros::ADIDigitalOut wing1 ('E', false);
-pros::ADIDigitalOut wing2 ('I', false);
+pros::ADIDigitalOut wing2 ('H', false);
 pros::ADIDigitalOut awp ('C', false);
 pros::ADIDigitalOut liftp ('A', true);
 pros::ADIDigitalOut intakep ('D', false);
 pros::ADIDigitalOut rachet ('B', false);
 
 //cata limit switch
-pros::ADIDigitalIn catalim ('H');
+pros::ADIDigitalIn catalim ('I');
 
 //extender
 pros::ADIDigitalOut extender ('J');

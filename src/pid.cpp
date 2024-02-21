@@ -326,8 +326,27 @@ void driveStraight2(int target) {
 
     while(true) {
 
-     
-    
+    //temp lift 
+    int lift_count = 0;
+    bool angle = 0;
+    angle = liftroto.get_angle();
+    if (angle > 30000){
+      angle = angle-36000;
+    }
+    setConstants(0.075, 0, 0.1);
+      LIFT.move(calcPID(4500, angle, 40, 140, false));
+      if (abs(liftroto.get_angle() - 15000) < 1000){
+        lift_count ++;
+      }
+
+      if (lift_count > 400){
+        LIFT.move(0);
+        break;
+        //liftToggle = true;
+        lift_count = 0;
+      }
+
+        setConstants(STRAIGHT_KP, STRAIGHT_KI, STRAIGHT_KD);
         // temp cata reset
         if (tempre){
         if (catalim.get_value() == false) CATA.move(127);
@@ -386,7 +405,6 @@ void driveStraight2(int target) {
 
 void driveStraightC(int target) {
     int timeout = 0;
-    target = target + 500;
     bool over = false;
     //int targetN = target + 500;
     // if (abs(target) < 1100) {
@@ -399,6 +417,11 @@ void driveStraightC(int target) {
     double x = 0;
     x = double(abs(target));
     timeout = (0.0000000000000214 * pow(x,5)) + (-0.00000000020623 * pow(x, 4)) + (0.00000074005 * pow(x, 3)) + (-0.00121409 * pow(x, 2)) + (1.27769 * x) + 426;
+    if(target > 0){
+    target = target + 500;
+    } else {
+        target = target - 500;
+    }
 
     double voltage;
     double encoderAvg;
@@ -454,7 +477,7 @@ void driveStraightC(int target) {
                 over = true;
             }
         } else {
-             if (((target-500) - encoderAvg) > 0){
+             if (((target+500) - encoderAvg) > 0){
                 over = true;
             }
         }
@@ -816,7 +839,7 @@ int voltageR = calcPID(rtarget, encoderAvgR, STRAIGHT_INTEGRAL_KI, STRAIGHT_MAX_
 double leftcorrect = (encoderAvgL * 360) / (2 * pi * radius);
 int fix = int(heading + leftcorrect);
 fix = fix * 10;
-con.print(0, 0, "Aut 0: %f        ", float(voltageR + fix));
+con.print(0, 0, "Aut 0: %f        ", float(timeout-time));
  
 
 chasMove( (voltageL - fix), (voltageL - fix), (voltageL - fix), (voltageR + fix), (voltageR + fix), (voltageR + fix));
@@ -1037,7 +1060,7 @@ int voltageR = calcPID(rtarget, encoderAvgR, STRAIGHT_INTEGRAL_KI, STRAIGHT_MAX_
 double rightcorrect = (encoderAvgR * 360) / (2 * pi * radius);
 int fix = int(heading - rightcorrect);
 fix = fix * 10;
-con.print(0, 0, "Aut 0: %f        ", float(encoderAvgR));
+con.print(0, 0, "Aut 0: %f        ", float(timeout-time));
    
 
 chasMove( (voltageL - fix), (voltageL - fix), (voltageL - fix), (voltageR + fix), (voltageR + fix), (voltageR + fix));
