@@ -15,6 +15,7 @@ extern void resetEncoders();
 extern void driveStraight(int target);
 extern void setConstants(double kp, double ki, double kd);
 extern double calcPID(double target, double input, int integralKi, int maxIntegral, bool slewOn);
+extern double calcPID2(double target, double input, int integralKi, int maxIntegral, bool slewOn);
 extern void driveStraight2(int target);
 extern void driveStraightC(int target);
 extern void driveTurn(int target);
@@ -23,17 +24,21 @@ extern void driveAim(int target);
 extern void driveSlow(int target);
 extern void driveSmall(int target);
 extern void driveShoot(int target);
-extern void chasMove2(int voltageLF, int voltageLB, int voltageLM, int voltageRF, int voltageRB, int voltageRM);
+extern void chasMove(int voltageLF, int voltageLB, int voltageLM, int voltageRF, int voltageRB, int voltageRM);
 extern void driveArcL(double theta, double radius, int timeout);
 extern void driveArcLF(double theta, double radius, int timeout);
 extern void driveArcR(double theta, double radius, int timeout);
 extern void driveArcRF(double theta, double radius, int timeout);
 extern int time2;
 extern float error;
+extern float error2;
 extern float viewvol;
 extern double heading_error;
+extern double lift_target;
 extern bool tempre;
+extern bool temp_lift;
 extern int integral;
+//hello
 
 //tune straight constants here: setConstants(STRAIGHT_KP, STRAIGHT_KI, STRAIGHT_KD);
 #define STRAIGHT_KP 0.95 // 

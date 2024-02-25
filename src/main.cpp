@@ -131,7 +131,7 @@ int wait = 900;
 int wait2 = 250;
 int lift_count = 0;
 
-double angle = 0;
+int angle = 0;
 
 bool rachetToggle = false;
 
@@ -198,7 +198,8 @@ void opcontrol() {
         con.print(1, 0, "CataTemp: %f           ", float(error));
       } 
       if (time % 50 == 0){
-        con.print(2, 0, "Temp: %f        ", float(imu.get_heading()));
+        setConstants(0.075, 0, 0.1);
+        con.print(2, 0, "Temp: %f        ", float(imu.get_heading())); // //imu.get_heading()
       } 
 
 
@@ -475,7 +476,8 @@ CATA.set_brake_mode(MOTOR_BRAKE_COAST);
 
 
       // driveTurn2(-55);
-      driveStraight2(-2000);
+      temp_lift = true;
+      driveStraight2(2000);
       // driveStraightC(1000);
       // driveArcLF(180, 500, 10000);
       // // driveArcL(150, 500, 10000);
@@ -556,7 +558,7 @@ if(ccon){
 } else {
     if(cataToggle2 || cataToggle){
     //CATA.move(127);
-    CATA.move_velocity(60);
+    CATA.move_velocity(67);
   } else {
      CATA.move(0);
     //CATA.move_velocity(0);

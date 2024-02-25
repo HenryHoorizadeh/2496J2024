@@ -20,7 +20,7 @@
   void liftU_fn(void* param) {
     int lift_count = 0;
     bool angle = 0;
-    std::uint32_t now = pros::millis();
+    //std::uint32_t now = pros::millis();
     while(true){
     angle = liftroto.get_angle();
     if (angle > 30000){
@@ -39,7 +39,7 @@
         lift_count = 0;
       }
       //delay(500);
-      pros::Task::delay_until(&now, 50);
+      //pros::Task::delay_until(&now, 50);
 
     }
  }
@@ -288,18 +288,55 @@ driveStraight2(900);
 
 
   } else if (atn == 1) {
+tempre = false;
+    //startnew
+    // INTAKE.move(120);
+    // RF.move(-10);
+    // RM.move(-10);
+    // RB.move(-10);
+    LF.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+    LM.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+    LB.set_brake_mode(E_MOTOR_BRAKE_HOLD);
 
-/*
-while(((cataroto.get_angle() < 34000 && cataroto.get_angle() > 16000) || (cataroto.get_angle() > 0 && cataroto.get_angle() < 14000)) && time < 1000){
+    intakep.set_value(true);
+    LIFT.move(-127);
+    delay(550); //350
+
+    int count = 0;
+    int time = 0;
+
+
+    int time3 = 0;
+
+    LIFT.move(0);
+    cataroto.reset_position();
+    
+    ///////////////////////////////////////////////////////////////////
+    CATA.move_velocity(67); //67
+     while ((time3 < 27000) && (-cataroto.get_position() < 828000)){
+        con.print(1, 0, "Roto: %f           ", float(cataroto.get_position()));
+        delay(10);
+        time3 += 10;
+    }
+    ///////////////////////////////////////////////////////////////////
+    CATA.move(0);
+
+time3 = 0;
+
+while(((cataroto.get_angle() < 34000 && cataroto.get_angle() > 16000) || (cataroto.get_angle() > 0 && cataroto.get_angle() < 14000)) && time3 < 1000){
      CATA.move_velocity(45);
      delay(1);
-     time += 1;
+     time3 += 1;
     }
     CATA.move(0);
+
+
+
 tempre = false;
-*/
-driveStraight2(100);
 imu.tare();
+intakep.set_value(true);
+driveStraight2(100);
+
 
 
 
@@ -307,23 +344,24 @@ imu.tare();
 driveTurn2(28); //30
      
 driveStraightC(3500);
+temp_lift = true;
+lift_target = 4500;
 //pros::Task liftU(liftU_fn);
 wing1.set_value(true);
 wing2.set_value(true);
 
 
-driveArcLF(30, 500, 1700);
+driveArcLF(30, 1200, 1700); //500
+
+driveArcLF(55, 1250, 1200);
 wing1.set_value(false);
 wing2.set_value(false);
 
 
-driveArcLF(55, 1250, 1200);
-
-
 driveStraightC(600);//first push on goal right
-driveStraight2(-500);
-driveTurn2(-62);
-driveStraight2(900);
+driveStraight2(-600);
+driveTurn2(-67); //-62
+driveStraight2(1800);
 tempre = false;
 /*
 time = 0;
@@ -375,7 +413,7 @@ driveTurn2(-30);
 
 //driveArcRF(-220, 200, 1000);
 //driveStraightC(-1100);
-driveArcR(-110, 200, 1300); //-110
+driveArcR(-110, 200, 1100); //-110 //1300 //1100 
 //intakep.set_value(true);
 
 
@@ -385,7 +423,7 @@ driveStraight2(2000);
 driveTurn2(0);
 driveStraightC(-1000);//-2000
 //driveTurn2(-60);
-driveArcR(-75, 200, 1000); //150
+driveArcR(-75, 200, 750); //150//1000 //800
 driveTurn2(-62);
 wing2.set_value(true);
 driveStraightC(350);//600
@@ -398,7 +436,7 @@ driveStraightC(1500);
 driveTurn2(0);
 wing2.set_value(false);
 driveStraightC(-1000);
-driveArcR(-75, 200, 1000);
+driveArcR(-75, 200, 750); //1000 ///800
 driveTurn2(-62);
 //driveTurn2(-60);
 wing2.set_value(true);
@@ -412,7 +450,7 @@ driveStraightC(1500);
 driveTurn2(28);
 wing2.set_value(false);
 driveStraightC(-1000);
-driveArcR(-90, 200, 1000);
+driveArcR(-90, 200, 800); //1000 //800
 driveTurn2(-62);
 driveStraightC(900);
 wing1.set_value(true);
@@ -434,20 +472,27 @@ wing2.set_value(false);
 
 
 driveTurn2(28);
-driveStraightC(-500);
-driveArcR(-68, 180, 1000); //-80 //-60 //-65
+driveStraightC(-700); ///-500
+driveArcR(-68, 180, 700); //-80 //-60 //-65 //1000
 wing2.set_value(true);
 driveTurn2(-40); //-37
 driveStraightC(1300);
 //wing1.set_value(true);
 //wing2.set_value(true);
-
+lift_target = 15000;
 driveArcRF(160, 525, 1700);  //280 //480
 wing1.set_value(false);
 wing1.set_value(false);
 driveTurn2(110); //118
 driveStraight2(700);
-driveStraight2(-500);
+driveStraightC(-500);
+driveArcRF(160, -525, 1700);
+driveTurn2(65);
+driveStraight2(-1000);
+rachet.set_value(true);
+chasMove(127,127,127,127,127,127);
+
+
 
 
 

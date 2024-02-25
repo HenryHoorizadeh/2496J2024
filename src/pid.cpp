@@ -22,7 +22,9 @@ float viewvol;
 double viewIntegral;
 double prevPower;
 double currentPower; // temp
+double lift_target = 0;
 bool tempre = true;
+bool temp_lift = false;
 
 double prevError; //how is this specified/calculated??
 double h;
@@ -30,8 +32,33 @@ double h;
 int integral;
 int derivative;
 int time2;
+int viewL = 0;
 
 double power; //voltage provided to motors at any given time to reach the target
+
+
+//calc2
+
+
+double vKp2;
+double vKi2;
+double vKd2;
+float error2; //amount from target
+float viewvol2;
+double viewIntegral2;
+double prevPower2;
+double currentPower2; // temp
+bool tempre2 = true;
+bool temp_lift2 = false;
+
+double prevError2; //how is this specified/calculated??
+double h2;
+//hi
+int integral2;
+int derivative2;
+int time22;
+
+double power2;
 
 
 void setConstants(double kp, double ki, double kd) {
@@ -85,6 +112,35 @@ double calcPID(double target, double input, int integralKi, int maxIntegral, boo
     power = (vKp * error) + (vKi * integral) + (vKd * derivative);
 
     return power;
+} 
+
+double calcPID2(double target, double input, int integralKi, int maxIntegral, bool slewOn) { //basically tuning i here
+    int integral2;
+    prevError2 = error2;
+    error2 = target - input;
+    prevPower2 = power2;
+    
+    if(std::abs(error2) < integralKi) {
+        integral2 += error2;
+    } else {
+        integral2 = 0;
+    }
+
+    if(integral2 >= 0) {
+        integral2 = std::min(integral2, maxIntegral); //min means take whichever value is smaller btwn integral and maxI
+        //integral = integral until integral is greater than maxI (to keep integral limited to maxI)
+    } else {
+        integral2 = std::max(integral2, -maxIntegral); //same thing but negative max
+    }
+    integral2;
+    
+    derivative2 = error2 - prevError2;
+
+    
+
+    power2 = (vKp * error2) + (vKi * integral2) + (vKd * derivative2);
+
+    return power2;
 }
 
 //driving straight
@@ -249,66 +305,7 @@ void driveStraight2(int target) {
     x = double(abs(target));
     timeout = (0.0000000000000214 * pow(x,5)) + (-0.00000000020623 * pow(x, 4)) + (0.00000074005 * pow(x, 3)) + (-0.00121409 * pow(x, 2)) + (1.27769 * x) + 426;
 
-
-
-    // if (target == 1401){
-    //     timeout = 1200;
-    // }
-
     
-    // if (target == 3250){
-    //     timeout = 9000;
-    // }
-
-    // if (target == 1501){
-    //     timeout = 1200;
-    // }
-    
-
-    // if (target == 1800){
-    //     timeout = 1200;
-    // }
-    // if (target == -1201){
-    //     timeout = 1000;
-    // } 
-
-    // if (target == -1100){
-    //     timeout = 500;
-    // } 
-    
-    // if (target == -1400){
-    //     timeout = 1100;
-    // }
-
-    // if (target == 521){
-    //     timeout = 500;
-    // }
-    
-    // if (target == -801){
-    //     timeout = 2000;
-    // }
-//timeout = 20000000;
-
-    // if (target == 851){
-    //     timeout = 900;
-    // }
-    // if (target == 151){
-    //     timeout = 300;
-    // }
-
-    
-    // if (target == -2001){
-    //     timeout = 1500;
-    // }
-    
-    // if (target == -20001){
-    //     timeout = 1500;
-    // }
-    // // if (target < 0){
-    // //      setConstants(53, 0.4, 878); //0.4
-    // // } else{
-    //      setConstants(STRAIGHT_KP, STRAIGHT_KI, STRAIGHT_KD);
-    // // }
 
     double voltage;
     double encoderAvg;
@@ -322,29 +319,36 @@ void driveStraight2(int target) {
     setConstants(STRAIGHT_KP, STRAIGHT_KI, STRAIGHT_KD);
     resetEncoders();
    
-    
+        int lift_count = 0;
+    double angle = 0;
+    int viewL = 0;
 
     while(true) {
-
+    if(temp_lift){
     //temp lift 
+    
     int lift_count = 0;
-    bool angle = 0;
+    int viewL = 0;
     angle = liftroto.get_angle();
     if (angle > 30000){
       angle = angle-36000;
     }
     setConstants(0.075, 0, 0.1);
-      LIFT.move(calcPID(4500, angle, 40, 140, false));
+      LIFT.move(calcPID2(lift_target, angle, 40, 140, false));
+      //LIFT.move(100);
+      viewL = calcPID2(lift_target, angle, 40, 140, false);
+      viewL=100;
       if (abs(liftroto.get_angle() - 15000) < 1000){
         lift_count ++;
       }
 
       if (lift_count > 400){
         LIFT.move(0);
-        break;
+        //break;
         //liftToggle = true;
         lift_count = 0;
       }
+    }
 
         setConstants(STRAIGHT_KP, STRAIGHT_KI, STRAIGHT_KD);
         // temp cata reset
@@ -388,9 +392,10 @@ void driveStraight2(int target) {
         
         if (time2 % 100 == 0) con.clear(); else if (time2 % 50 == 0) {
 			cycle++;
+            setConstants(0.075, 0, 0.1);
             if ((cycle+1) % 3 == 0) con.print(0, 0, "Enc: %2f", encoderAvg); 
             if ((cycle+2) % 3 == 0) con.print(1, 0, "Heading: %2f", heading_error); //autstr //%s
-            if ((cycle+3) % 3 == 0) con.print(2, 0, "ERROR: %f", float(error));
+            if ((cycle+3) % 3 == 0) con.print(2, 0, "ERROR: %f", float(calcPID2(4500, 10, 40, 140, false)));
 		}
         time2 += 10;
         //hi
@@ -438,6 +443,30 @@ void driveStraightC(int target) {
     
 
     while(true) {
+
+    if(temp_lift){
+    //temp lift 
+    int lift_count = 0;
+    double angle = 0;
+    angle = liftroto.get_angle();
+    if (angle > 30000){
+      angle = angle-36000;
+    }
+    setConstants(0.075, 0, 0.1);
+      LIFT.move(calcPID2(lift_target, angle, 40, 140, false));
+      if (abs(liftroto.get_angle() - 15000) < 1000){
+        lift_count ++;
+      }
+
+      if (lift_count > 400){
+        LIFT.move(0);
+        //break;
+        //liftToggle = true;
+        lift_count = 0;
+      }
+    }
+
+    setConstants(STRAIGHT_KP, STRAIGHT_KI, STRAIGHT_KD);
 
      
     
@@ -726,6 +755,27 @@ void driveTurn2(int target) { //target is inputted in autons
     
 
     while(true) {
+        if(temp_lift){
+    //temp lift 
+    int lift_count = 0;
+    double angle = 0;
+    angle = liftroto.get_angle();
+    if (angle > 30000){
+      angle = angle-36000;
+    }
+    //setConstants(0.075, 0, 0.1);
+      LIFT.move(calcPID2(lift_target, angle, 40, 140, false));
+      if (abs(liftroto.get_angle() - 15000) < 1000){
+        lift_count ++;
+      }
+
+      if (lift_count > 400){
+        LIFT.move(0);
+        //break;
+        //liftToggle = true;
+        lift_count = 0;
+      }
+    }
         // temp cata reset
         if (tempre){
         if (catalim.get_value() == false) CATA.move(127);
@@ -806,6 +856,32 @@ theta = theta + 45;
 ltarget = double((theta / 360) * 2 * pi * radius); // * double(2) * pi * double(radius));
 rtarget = double((theta / 360) * 2 * pi * (radius + 550));
 while (true){
+
+if(temp_lift){
+    //temp lift 
+    int lift_count = 0;
+    double angle = 0;
+    angle = liftroto.get_angle();
+    if (angle > 30000){
+      angle = angle-36000;
+    }
+    setConstants(0.075, 0, 0.1);
+      LIFT.move(calcPID2(lift_target, angle, 40, 140, false));
+      if (abs(liftroto.get_angle() - 15000) < 1000){
+        lift_count ++;
+      }
+
+      if (lift_count > 400){
+        LIFT.move(0);
+        //break;
+        //liftToggle = true;
+        lift_count = 0;
+      }
+    }
+    setConstants(0.25, 0, 0.01);
+
+
+    
 double heading = imu.get_heading() - init_heading;
 if (theta > 0){
     if (heading > 30){
@@ -880,6 +956,32 @@ con.clear();
 ltarget = double((theta / 360) * 2 * pi * radius); // * double(2) * pi * double(radius));
 rtarget = double((theta / 360) * 2 * pi * (radius + 550));
 while (true){
+
+
+
+if(temp_lift){
+    //temp lift 
+    int lift_count = 0;
+    double angle = 0;
+    angle = liftroto.get_angle();
+    if (angle > 30000){
+      angle = angle-36000;
+    }
+    setConstants(0.075, 0, 0.1);
+      LIFT.move(calcPID2(lift_target, angle, 40, 140, false));
+      if (abs(liftroto.get_angle() - 15000) < 1000){
+        lift_count ++;
+      }
+
+      if (lift_count > 400){
+        LIFT.move(0);
+        //break;
+        //liftToggle = true;
+        lift_count = 0;
+      }
+    }
+setConstants(0.25, 0, 0.01);
+
 double heading = imu.get_heading() - init_heading;
 if (theta > 0){
     if (heading > 30){
@@ -952,6 +1054,32 @@ con.clear();
 ltarget = double((theta / 360) * 2 * pi * (radius + 550)); // * double(2) * pi * double(radius));
 rtarget = double((theta / 360) * 2 * pi * (radius));
 while (true){
+
+if(temp_lift){
+    //temp lift 
+    int lift_count = 0;
+    double angle = 0;
+    angle = liftroto.get_angle();
+    if (angle > 30000){
+      angle = angle-36000;
+    }
+    setConstants(0.075, 0, 0.1);
+      LIFT.move(calcPID2(lift_target, angle, 40, 140, false));
+      if (abs(liftroto.get_angle() - 15000) < 1000){
+        lift_count ++;
+      }
+
+      if (lift_count > 400){
+        LIFT.move(0);
+        //break;
+        //liftToggle = true;
+        lift_count = 0;
+      }
+    }
+
+    setConstants(0.25, 0, 0.01);
+
+
 double heading = imu.get_heading() - init_heading;
 if (theta > 0){
     if (heading > 300){
@@ -1027,6 +1155,33 @@ theta = theta + 45;
 ltarget = double((theta / 360) * 2 * pi * (radius + 550)); // * double(2) * pi * double(radius));
 rtarget = double((theta / 360) * 2 * pi * (radius));
 while (true){
+
+
+if(temp_lift){
+    //temp lift 
+    int lift_count = 0;
+    double angle = 0;
+    angle = liftroto.get_angle();
+    if (angle > 30000){
+      angle = angle-36000;
+    }
+    setConstants(0.075, 0, 0.1);
+      LIFT.move(calcPID2(lift_target, angle, 40, 140, false));
+      if (abs(liftroto.get_angle() - 15000) < 1000){
+        lift_count ++;
+      }
+
+      if (lift_count > 400){
+        LIFT.move(0);
+        //break;
+        //liftToggle = true;
+        lift_count = 0;
+      }
+    }
+    setConstants(0.25, 0, 0.01);
+
+
+
 double heading = imu.get_heading() - init_heading;
 if (theta > 0){
     if (heading > 300){
