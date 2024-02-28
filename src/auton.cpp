@@ -312,12 +312,14 @@ tempre = false;
     cataroto.reset_position();
     
     ///////////////////////////////////////////////////////////////////
+    /*
     CATA.move_velocity(67); //67
      while ((time3 < 27000) && (-cataroto.get_position() < 828000)){
         con.print(1, 0, "Roto: %f           ", float(cataroto.get_position()));
         delay(10);
         time3 += 10;
     }
+    */
     ///////////////////////////////////////////////////////////////////
     CATA.move(0);
 
