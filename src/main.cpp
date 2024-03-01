@@ -66,7 +66,7 @@ void disabled() {}
  * starts.
  */
 
-int atn = 1;
+int atn = 2;
 string autstr;
  
 void competition_initialize() {
@@ -655,7 +655,7 @@ if (intakeToggle == false) {
     if (liftToggle == false) {
       //liftToggle90 == true;
       setConstants(0.075, 0, 0.1);
-      LIFT.move(calcPID(15000, angle, 40, 140, false));
+      LIFT.move(calcPID(15400, angle, 40, 140, false)); //15000
       if (abs(liftroto.get_angle() - 15000) < 1000){
         lift_count ++;
       }

@@ -76,49 +76,75 @@ tempre = false;
     int time = 0;
 
 
+    int time3 = 0;
+
     LIFT.move(0);
     cataroto.reset_position();
+    
     ///////////////////////////////////////////////////////////////////
-    CATA.move_velocity(60); //
-     while ((time < 27000) && (-cataroto.get_position() < 828000)){
+    /*
+    CATA.move_velocity(67); //67
+     while ((time3 < 27000) && (-cataroto.get_position() < 828000)){
         con.print(1, 0, "Roto: %f           ", float(cataroto.get_position()));
         delay(10);
-        time += 10;
+        time3 += 10;
     }
+    */
     ///////////////////////////////////////////////////////////////////
     CATA.move(0);
 
-    CATA.move(0);
-    LF.set_brake_mode(E_MOTOR_BRAKE_COAST);
-    LB.set_brake_mode(E_MOTOR_BRAKE_COAST);
-    LB.set_brake_mode(E_MOTOR_BRAKE_COAST);
-///
-driveStraight2(100);
+time3 = 0;
 
-while(((cataroto.get_angle() < 34000 && cataroto.get_angle() > 16000) || (cataroto.get_angle() > 0 && cataroto.get_angle() < 14000)) && time < 1000){
+while(((cataroto.get_angle() < 34000 && cataroto.get_angle() > 16000) || (cataroto.get_angle() > 0 && cataroto.get_angle() < 14000)) && time3 < 1000){
      CATA.move_velocity(45);
      delay(1);
-     time += 1;
+     time3 += 1;
     }
     CATA.move(0);
+
+
+
 tempre = false;
 imu.tare();
+intakep.set_value(true);
+driveStraight2(100);
 
-//driveArcL(60,400,900);
-//driveStraight2(400);
-//driveTurn(90);
+
+
+
+
 driveTurn2(28); //30
-driveStraight2(4100);
+     
+driveStraightC(3500);
+temp_lift = true;
+lift_target = 4500;
+//pros::Task liftU(liftU_fn);
+wing1.set_value(true);
+wing2.set_value(true);
 
+
+driveArcLF(30, 1200, 1700); //500
+
+driveArcLF(55, 1250, 1200);
+wing1.set_value(false);
+wing2.set_value(false);
+
+
+driveStraightC(600);//first push on goal right
+driveStraight2(-600);
+driveTurn2(-67); //-62
+driveStraight2(1800);
 tempre = false;
-
+/*
 time = 0;
 int lift_count = 0;
 double angle = 0;
 
+
 while(true){
 setConstants(0.09, 0, 0.2); //0.075
 angle = liftroto.get_angle();
+
 
     if (angle > 30000){
       angle = angle-36000;
@@ -135,158 +161,122 @@ angle = liftroto.get_angle();
         break;
         lift_count = 0;
       }
-}
+}*/
 
-driveTurn2(-15);
-wing1.set_value(true);//Gerald was here
-driveStraight2(1200); //1400
-wing1.set_value(false); //800
-driveTurn2(-60);
-intakep.set_value(false);
-driveStraight2(1601);
-driveStraight2(-700);//-800
-driveTurn2(-55);
-driveStraight2(1601);
-///
 
-//tempre = false;//was not here, can delete later
+//intakep.set_value(false);
+driveStraightC(-200);
 
-driveStraight2(-700);//back from goal
-driveTurn2(-140);
-driveStraight2(1400); //2200
-//driveTurn2(-20); //-10
-driveArcR(75, 550, 1300);
-driveStraight2(-500);
-//driveTurn2(-20);
 
-/*
-wing1.set_value(1);
-driveStraight2(500);
-driveTurn2(70);//turn to goal to push 1
-wing1.set_value(0);
 
-driveStraight2(1500);// PUSH 1
-driveStraight2(-500);
-driveStraight2(750);//second push
 
-driveStraight2(-1500);
-driveTurn2(-17);
 
-driveStraight2(1000);
-driveStraight2(-270);//back a bit to avoid ball
-driveTurn2(80);
+
+driveTurn2(-150);
+wing1.set_value(true);
+driveStraightC(400); //700
+
+// wing2.set_value(false);
+
+/*split arc
+driveArcRF(110, 200, 1700);//make sure corner ball are near goal
+wing1.set_value(false);
+driveStraightC(200);
+driveArcRF(70, 200, 1200);
 */
-//wing1.set_value(1);
-// driveArcR(45, 450, 1000);
-// wing1.set_value(0);
-// driveArcR(45, 450, 1000);
-//driveArcR(40, 1550, 1000);
-//driveArcR(90, 450, 1000);
-driveTurn2(0);
 
-// wing1.set_value(1);
-// driveArcR(80, 350, 1800);//arc push    does not work :(  works by itself
+driveArcRF(180, 200, 1800);
+wing1.set_value(false);
 
 
+//driveArcRF(-220, 200, 1000);
+//driveStraightC(-1100);
+driveArcR(-180, 200, 1800); //-110 //1300 //1100 
+//intakep.set_value(true);
 
-driveStraight2(2100);//push 2 //1400 //2800
-wing1.set_value(0);
-// driveStraight2(-500);
-// driveStraight2(750);//second push
-wing1.set_value(0);
-driveTurn2(5);
-driveStraight2(-1500);
 
-driveTurn2(-60);//-17 //-73
-driveStraight2(900);//drive to side 750
-driveTurn2(30);
-wing1.set_value(1);
-delay(250);
+driveStraightC(425); //400
+driveArcRF(160, 230, 2500); //180
 driveStraight2(2000);
-wing1.set_value(0);
-driveStraight2(-1700); //-1500
+driveTurn2(0);
+driveStraightC(-1000);//-2000
+//driveTurn2(-60);
+driveArcR(-75, 200, 750); //150//1000 //800
+driveTurn2(-62);
+wing2.set_value(true);
+driveStraightC(350);//600
 
-driveTurn2(-73);//-17
-driveStraight2(1800); //1300
 
 
-driveTurn2(70); //70
-wing1.set_value(1);
-delay(300);
+
+driveArcRF(90, 300, 1000);
+driveStraightC(1500);
+driveTurn2(0);
+wing2.set_value(false);
+driveStraightC(-1000);
+driveArcR(-75, 200, 750); //1000 ///800
+driveTurn2(-62);
+//driveTurn2(-60);
+wing2.set_value(true);
+driveStraightC(550); //700
+
+
+
+
+driveArcRF(100, 230, 1000);
+driveStraightC(1500);
+driveTurn2(28);
+wing2.set_value(false);
+driveStraightC(-1000);
+driveArcR(-90, 200, 800); //1000 //800
+driveTurn2(-62);
+driveStraightC(900);
+wing1.set_value(true);
+wing2.set_value(true);
+driveArcRF(165, 100, 2000);
+// wing1.set_value(true);
+// wing2.set_value(true);
+driveStraightC(400);
+driveArcLF(75, 350, 2000); //250
+driveStraight2(300);
+wing1.set_value(false);
+// wing2.set_value(false);
+driveStraight2(-400);
+driveTurn2(28);
 driveStraight2(700);
-
-// wing1.set_value(1);
-// delay(300);
-driveArcL(45, 2500, 1000);//arc push 1 //2300
-driveTurn2(30);
-wing1.set_value(0);
-driveStraight2(1000);
-driveTurn2(10);
-driveStraight2(-1500);
-wing1.set_value(1);
-/*
-driveTurn2(30);
-driveStraight2(1800);
-wing1.set_value(0);
-driveStraight2(-1500);
-*/
-
-/*old last push
-driveTurn2(-73);//-17
-driveStraight2(1400); //1300
+wing2.set_value(false);
+driveTurn2(28);
+driveStraightC(-700); ///-500
 
 
-driveTurn2(70); //70
-
-wing1.set_value(1);
-delay(300);
-//wing1.set_value(1);
-driveArcL(45, 2500, 1500);//arc push 1 //2300
-driveTurn2(30);
-wing1.set_value(0);
-driveStraight2(1000);
-driveStraight2(-1500);
-*/
-
-/*arc end
-driveTurn2(-60);
-driveStraight2(1000);
-wing1.set_value(1);
-driveArcR(90, 600, 1500);
-driveStraight2(1500);
-wing1.set_value(1);
-driveTurn2(-60);
-driveStraight2(1000);
-driveTurn2(30);
-driveStraight2(500);
-wing1.set_value(1);
-driveTurn2(750);
+driveArcR(-68, 180, 700); //-80 //-60 //-65 //1000
+// wing2.set_value(true);
+// wing1.set_value(true);
+driveTurn2(-40); //-37
+driveStraightC(1300);
+driveArcLF(22, 110, 800);
 driveStraight2(1200);
-driveTurn2(120);
-driveStraight2(1600);
-driveStraight2(-700);
-*/ 
+driveTurn2(28);
 
-// wing1.set_value(1);
-// driveTurn2(30);
-// driveStraight2(1500);
-
-// ///driveArcL(45, 2300, 2500); //arc push 2
-// // driveStraight2(1000);
-// //driveStraight2(-200);
-// wing1.set_value(0);
-// driveStraight2(-1000);
-
-/*
-driveTurn2(80);
-driveStraight2(1600);
-driveArcR(90, 200, 1000);
-driveStraight2(600);
+//final side push
+wing1.set_value(true);
+wing2.set_value(true);
+driveArcRF(30, 1200, 1700); //500
+driveArcRF(55, 1250, 1200);
+wing1.set_value(false);
+wing2.set_value(false);
+driveStraightC(600);//first push on goal right
 driveStraight2(-600);
-driveStraight2(900);
-*/
+driveTurn2(118); //-62
+driveStraight2(1800);
 
 
+
+
+
+
+
+  
   } else if (atn == 1) {
 tempre = false;
     //startnew
@@ -505,21 +495,40 @@ chasMove(127,127,127,127,127,127);
 //22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
 
   else if (atn == 2) {
-    tempre = false;
-   awp.set_value(true);
-  delay(500);
+    intakep.set_value(true);
+  INTAKE.move(127);
+  wing2.set_value(true);
+  delay(150);
+  driveStraightC(500);
+  wing2.set_value(false);
+  driveStraight2(2100);
+  driveStraightC(-2200); //-2400
+  INTAKE.move(-127);
+  driveTurn2(90);
+  driveTurn2(-75);
+  INTAKE.move(127);
+  LIFT.move(-127);
+  driveStraight2(1700);
+  LIFT.move(0);
+  driveStraight2(-1500); //-1700
+  driveTurn2(97);
+
+  wing1.set_value(true);
+  wing2.set_value(true);
+  driveArcLF(30, 1200, 1700); //500
+  INTAKE.move(-127);
+  driveArcLF(45, 1250, 1000);
+  wing1.set_value(false);
+  wing2.set_value(false);
+  driveStraightC(1500);
+  driveStraightC(-800);
+  driveTurn2(15);
+  driveStraightC(1500);
   driveStraight2(-800);
-  driveTurn2(170);
-  awp.set_value(false);
-  // driveTurn2(45);
-  // //intakep.set_value(true);
-  // driveStraight2(-1500);
-  // driveStraight2(1400);
-  driveTurn2(0);
-  driveStraight2(800);
   driveTurn2(-45);
-  driveStraight2(1550);
-  intakep.set_value(true);
+  INTAKE.move(127);
+  driveStraight2(1800);
+  
 
 
   }
