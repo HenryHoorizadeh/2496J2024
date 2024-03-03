@@ -527,7 +527,11 @@ chasMove(127,127,127,127,127,127);
   driveStraight2(-800);
   driveTurn2(-45);
   INTAKE.move(127);
-  driveStraight2(1800);
+  // driveStraight2(1800);
+  // driveStraightC(-700);
+  // //Cut
+  // driveArcLF(90, 500, 1500);
+  // driveStraight2(-1000);
   
 
 
@@ -537,22 +541,36 @@ chasMove(127,127,127,127,127,127);
 
   
   else if (atn == 3) {
+  imu.tare();
+  intakep.set_value(true);
+  INTAKE.move(127);
+  driveStraight2(2300);
+  driveStraight2(-250);
+  driveTurn(75);
+  wing1.set_value(true);
+  driveStraight2(1200);
+  wing1.set_value(false);
+  driveStraight2(-400);
+  INTAKE.move(-127);
+  driveStraight2(1000);
+  driveStraight2(-800);
+    
   //   tempre = false;
   //  awp.set_value(true);
   // delay(500);
-  driveStraight2(-2500);
-  driveStraight2(1000);
- // driveTurn2(170);
-  //awp.set_value(false);
-  // driveTurn2(45);
-  // //intakep.set_value(true);
-  // driveStraight2(-1500);
-  // driveStraight2(1400);
-  // driveTurn2(0);
-  // driveStraight2(800);
-  // driveTurn2(-45);
-  // driveStraight2(1550);
-  // intakep.set_value(true);
+//   driveStraight2(-2500);
+//   driveStraight2(1000);
+//  // driveTurn2(170);
+//   //awp.set_value(false);
+//   // driveTurn2(45);
+//   // //intakep.set_value(true);
+//   // driveStraight2(-1500);
+//   // driveStraight2(1400);
+//   // driveTurn2(0);
+//   // driveStraight2(800);
+//   // driveTurn2(-45);
+//   // driveStraight2(1550);
+//   // intakep.set_value(true);
     
   
   }

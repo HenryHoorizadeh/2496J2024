@@ -66,7 +66,7 @@ void disabled() {}
  * starts.
  */
 
-int atn = 2;
+int atn = 3;
 string autstr;
  
 void competition_initialize() {
@@ -172,7 +172,8 @@ void opcontrol() {
   bool cataPrimed;
   CATA.tare_position();
   imu.tare_heading();
-  
+  double mrpm = 0;
+  double prevrpm = 0;
 
 	while (true) {
     //printing stuff
@@ -180,6 +181,10 @@ void opcontrol() {
 		double chasstempC = ((RF.get_temperature() + RB.get_temperature() + LF.get_temperature() + LB.get_temperature())/4);
     double catat = (CATA.get_temperature());
     double catatempC = CATA.get_temperature();
+    prevrpm = mrpm;
+    if (prevrpm < RF.get_actual_velocity()){
+    mrpm = RF.get_actual_velocity();
+    }
 		
     //if (time % 100 == 0) con.clear();
 		
@@ -195,11 +200,11 @@ void opcontrol() {
         con.print(0, 0, "ERROR: %s           ", autstr);
       } 
       if (time % 50 == 0 && time % 100 != 0){
-        con.print(1, 0, "CataTemp: %f           ", float(error));
+        con.print(1, 0, "CataTemp: %f           ", float(imu.get_heading()));
       } 
       if (time % 50 == 0){
         setConstants(0.075, 0, 0.1);
-        con.print(2, 0, "Temp: %f        ", float(imu.get_heading())); // //imu.get_heading()
+        con.print(2, 0, "Temp: %f        ", float(mrpm)); // //imu.get_heading()
       } 
 
 
