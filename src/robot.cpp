@@ -24,10 +24,10 @@
 // 2496j
 #define OPTICAL_PORT 4
 #define IMU_PORT 13
-#define LF_PORT 12
+#define LF_PORT 11
 #define LM_PORT 17
 #define LB_PORT 4
-#define RF_PORT 16
+#define RF_PORT 15
 #define RM_PORT 14
 #define RB_PORT 20
 #define GPS_PORT 21

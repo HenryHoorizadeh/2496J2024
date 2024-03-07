@@ -66,7 +66,7 @@ void disabled() {}
  * starts.
  */
 
-int atn = 3;
+int atn = 0;
 string autstr;
  
 void competition_initialize() {
@@ -173,6 +173,7 @@ void opcontrol() {
   CATA.tare_position();
   imu.tare_heading();
   double mrpm = 0;
+
   double prevrpm = 0;
 
 	while (true) {
@@ -182,8 +183,8 @@ void opcontrol() {
     double catat = (CATA.get_temperature());
     double catatempC = CATA.get_temperature();
     prevrpm = mrpm;
-    if (prevrpm < RF.get_actual_velocity()){
-    mrpm = RF.get_actual_velocity();
+    if (prevrpm < LM.get_actual_velocity()){
+    mrpm = LM.get_actual_velocity();
     }
 		
     //if (time % 100 == 0) con.clear();
@@ -563,7 +564,7 @@ if(ccon){
 } else {
     if(cataToggle2 || cataToggle){
     //CATA.move(127);
-    CATA.move_velocity(67);
+    CATA.move_velocity(75); //67
   } else {
      CATA.move(0);
     //CATA.move_velocity(0);

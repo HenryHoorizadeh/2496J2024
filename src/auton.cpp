@@ -82,14 +82,14 @@ tempre = false;
     cataroto.reset_position();
     
     ///////////////////////////////////////////////////////////////////
-    /*
-    CATA.move_velocity(67); //67
+    
+    CATA.move_velocity(75); //67
      while ((time3 < 27000) && (-cataroto.get_position() < 828000)){
         con.print(1, 0, "Roto: %f           ", float(cataroto.get_position()));
         delay(10);
         time3 += 10;
     }
-    */
+    
     ///////////////////////////////////////////////////////////////////
     CATA.move(0);
 
@@ -185,8 +185,12 @@ driveStraightC(200);
 driveArcRF(70, 200, 1200);
 */
 
-driveArcRF(180, 200, 1800);
+driveArcRF(190, 200, 1800);
+driveTurn2(28); 
+driveStraight(800);
+
 wing1.set_value(false);
+driveStraightC(-200);
 
 
 //driveArcRF(-220, 200, 1000);
@@ -302,14 +306,14 @@ tempre = false;
     cataroto.reset_position();
     
     ///////////////////////////////////////////////////////////////////
-    /*
-    CATA.move_velocity(67); //67
+    
+    CATA.move_velocity(78); //67
      while ((time3 < 27000) && (-cataroto.get_position() < 828000)){
         con.print(1, 0, "Roto: %f           ", float(cataroto.get_position()));
         delay(10);
         time3 += 10;
     }
-    */
+    
     ///////////////////////////////////////////////////////////////////
     CATA.move(0);
 
@@ -399,7 +403,7 @@ driveStraightC(400); //700
 // wing2.set_value(false);
 driveArcRF(110, 200, 1700);//make sure corner ball are near goal
  wing1.set_value(false);
-driveStraightC(200);
+driveStraightC(200); //200
 driveTurn2(-30);
 
 
@@ -478,7 +482,7 @@ wing1.set_value(false);
 driveTurn2(110); //118
 driveStraight2(700);
 driveStraightC(-500);
-driveArcRF(160, -525, 1700);
+driveArcRF(-160, 525, 1700); //negative 
 driveTurn2(65);
 driveStraight2(-1000);
 rachet.set_value(true);
@@ -494,7 +498,7 @@ chasMove(127,127,127,127,127,127);
 
 //22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
 
-  else if (atn == 2) {
+  else if (atn == 2) { //3ball
     intakep.set_value(true);
   INTAKE.move(127);
   wing2.set_value(true);
@@ -540,7 +544,7 @@ chasMove(127,127,127,127,127,127);
 //3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
 
   
-  else if (atn == 3) {
+  else if (atn == 3) { //rush
   imu.tare();
   intakep.set_value(true);
   INTAKE.move(127);
@@ -578,7 +582,7 @@ chasMove(127,127,127,127,127,127);
 //44444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
 
 
-  else if (atn == 4) {
+  else if (atn == 4) { //out of corner
      tempre = false;
      driveStraight2(100);
    LIFT.move(127);
