@@ -742,7 +742,7 @@ void driveTurn2(int target) { //target is inputted in autons
 
     
     x = double(abs(turnv));
-    timeout = (0.000000084191 * pow(x,5)) + (-0.0000359624 * pow(x, 4)) + (0.00592914 * pow(x, 3)) + (-0.471886 * pow(x, 2)) + (19.9573 * x) + 474.454;
+    timeout = (0.000000084191 * pow(x,5)) + (-0.0000359624 * pow(x, 4)) + (0.00592914 * pow(x, 3)) + (-0.471886 * pow(x, 2)) + (19.9573 * x) + 374.454; //474.45
 
 
     

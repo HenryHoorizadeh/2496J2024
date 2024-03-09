@@ -82,14 +82,14 @@ tempre = false;
     cataroto.reset_position();
     
     ///////////////////////////////////////////////////////////////////
-    
+    /*
     CATA.move_velocity(75); //67
      while ((time3 < 27000) && (-cataroto.get_position() < 828000)){
         con.print(1, 0, "Roto: %f           ", float(cataroto.get_position()));
         delay(10);
         time3 += 10;
     }
-    
+    */
     ///////////////////////////////////////////////////////////////////
     CATA.move(0);
 
@@ -115,7 +115,7 @@ driveStraight2(100);
 
 driveTurn2(28); //30
      
-driveStraightC(3500);
+driveStraightC(3700);
 temp_lift = true;
 lift_target = 4500;
 //pros::Task liftU(liftU_fn);
@@ -184,6 +184,8 @@ wing1.set_value(false);
 driveStraightC(200);
 driveArcRF(70, 200, 1200);
 */
+temp_lift = true;
+lift_target = 4500;
 
 driveArcRF(190, 200, 1800);
 driveTurn2(28); 
@@ -282,6 +284,15 @@ driveStraight2(1800);
 
   
   } else if (atn == 1) {
+/*
+while(((cataroto.get_angle() < 34000 && cataroto.get_angle() > 16000) || (cataroto.get_angle() > 0 && cataroto.get_angle() < 14000)) && time < 1000){
+     CATA.move_velocity(45);
+     delay(1);
+     time += 1;
+    }
+    CATA.move(0);
+tempre = false;
+*/
 tempre = false;
     //startnew
     // INTAKE.move(120);
@@ -307,7 +318,7 @@ tempre = false;
     
     ///////////////////////////////////////////////////////////////////
     
-    CATA.move_velocity(78); //67
+    CATA.move_velocity(75); //67
      while ((time3 < 27000) && (-cataroto.get_position() < 828000)){
         con.print(1, 0, "Roto: %f           ", float(cataroto.get_position()));
         delay(10);
@@ -319,20 +330,12 @@ tempre = false;
 
 time3 = 0;
 
-while(((cataroto.get_angle() < 34000 && cataroto.get_angle() > 16000) || (cataroto.get_angle() > 0 && cataroto.get_angle() < 14000)) && time3 < 1000){
-     CATA.move_velocity(45);
-     delay(1);
-     time3 += 1;
-    }
-    CATA.move(0);
-
-
 
 tempre = false;
 imu.tare();
 intakep.set_value(true);
 driveStraight2(100);
-
+imu.tare();
 
 
 
@@ -355,9 +358,9 @@ wing2.set_value(false);
 
 
 driveStraightC(600);//first push on goal right
-driveStraight2(-600);
-driveTurn2(-67); //-62
-driveStraight2(1800);
+driveStraight2(-500);//s2
+driveTurn2(-56); //-62
+driveStraight2(1000);
 tempre = false;
 /*
 time = 0;
@@ -387,6 +390,8 @@ angle = liftroto.get_angle();
       }
 }*/
 
+temp_lift = true;
+lift_target = 4500;
 
 //intakep.set_value(false);
 driveStraightC(-200);
@@ -403,13 +408,13 @@ driveStraightC(400); //700
 // wing2.set_value(false);
 driveArcRF(110, 200, 1700);//make sure corner ball are near goal
  wing1.set_value(false);
-driveStraightC(200); //200
+driveStraightC(200);
 driveTurn2(-30);
 
 
 //driveArcRF(-220, 200, 1000);
 //driveStraightC(-1100);
-driveArcR(-110, 200, 1100); //-110 //1300 //1100 
+driveArcR(-110, 200, 1000); //-110 //1300
 //intakep.set_value(true);
 
 
@@ -419,7 +424,7 @@ driveStraight2(2000);
 driveTurn2(0);
 driveStraightC(-1000);//-2000
 //driveTurn2(-60);
-driveArcR(-75, 200, 750); //150//1000 //800
+driveArcR(-75, 200, 800); //150 //1000
 driveTurn2(-62);
 wing2.set_value(true);
 driveStraightC(350);//600
@@ -432,7 +437,7 @@ driveStraightC(1500);
 driveTurn2(0);
 wing2.set_value(false);
 driveStraightC(-1000);
-driveArcR(-75, 200, 750); //1000 ///800
+driveArcR(-75, 200, 700); //1000
 driveTurn2(-62);
 //driveTurn2(-60);
 wing2.set_value(true);
@@ -446,7 +451,7 @@ driveStraightC(1500);
 driveTurn2(28);
 wing2.set_value(false);
 driveStraightC(-1000);
-driveArcR(-90, 200, 800); //1000 //800
+driveArcR(-90, 200, 900); //1000
 driveTurn2(-62);
 driveStraightC(900);
 wing1.set_value(true);
@@ -468,29 +473,26 @@ wing2.set_value(false);
 
 
 driveTurn2(28);
-driveStraightC(-700); ///-500
-driveArcR(-68, 180, 700); //-80 //-60 //-65 //1000
+driveStraightC(-500);
+driveArcR(-68, 180, 800); //-80 //-60 //-65 //1000
 wing2.set_value(true);
 driveTurn2(-40); //-37
 driveStraightC(1300);
 //wing1.set_value(true);
 //wing2.set_value(true);
-lift_target = 15000;
+
 driveArcRF(160, 525, 1700);  //280 //480
 wing1.set_value(false);
 wing1.set_value(false);
 driveTurn2(110); //118
-driveStraight2(700);
-driveStraightC(-500);
-driveArcRF(-160, 525, 1700); //negative 
-driveTurn2(65);
-driveStraight2(-1000);
-rachet.set_value(true);
-chasMove(127,127,127,127,127,127);
+driveStraight2(600); //700
+driveStraight2(-400); //-500
+driveStraight2(900); 
+driveStraight2(-500);
 
 
 
-
+  
 
   
   }

@@ -66,7 +66,7 @@ void disabled() {}
  * starts.
  */
 
-int atn = 0;
+int atn = 1;
 string autstr;
  
 void competition_initialize() {
