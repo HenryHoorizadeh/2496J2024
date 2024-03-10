@@ -337,13 +337,11 @@ void opcontrol() {
 			INTAKE.move(-127);
       down = false;
       R1 = true;
-		}
-		else if (con.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+		} else if (con.get_digital(E_CONTROLLER_DIGITAL_R2)) {
 			INTAKE.move(127);
       down = false;
       R1 = false;
-		}
-		else {
+		} else {
 			INTAKE.move(0);
       down = false;
       R1 = false;
@@ -679,8 +677,7 @@ if (intakeToggle == false) {
     if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
 			liftToggle = !liftToggle;
       liftToggle90 = true;
-		 }
-     else if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
+		 } else if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
 			liftToggle90 = !liftToggle90;
       liftToggle = true;
 		}

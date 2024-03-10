@@ -1,5 +1,5 @@
 #include "api.h"
-// #include "auton.h"
+#include "auton.h"
 #include "main.h"
 #include "pid.h"
 #include "robot.h"
