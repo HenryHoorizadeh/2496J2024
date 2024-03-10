@@ -318,8 +318,8 @@ tempre = false;
     
     ///////////////////////////////////////////////////////////////////
     
-    CATA.move_velocity(75); //67
-     while ((time3 < 27000) && (-cataroto.get_position() < 828000)){
+    CATA.move_velocity(85); //67 //75
+     while ((time3 < 27000) && (-cataroto.get_position() < 810000)){ //828000
         con.print(1, 0, "Roto: %f           ", float(cataroto.get_position()));
         delay(10);
         time3 += 10;
@@ -454,9 +454,10 @@ driveStraightC(-1000);
 driveArcR(-90, 200, 900); //1000
 driveTurn2(-62);
 driveStraightC(900);
-wing1.set_value(true);
+// wing1.set_value(true);
 wing2.set_value(true);
 driveArcRF(165, 100, 2000);
+wing1.set_value(true);
 // wing1.set_value(true);
 // wing2.set_value(true);
 driveStraightC(400);
@@ -488,7 +489,7 @@ driveTurn2(110); //118
 driveStraight2(600); //700
 driveStraight2(-400); //-500
 driveStraight2(900); 
-driveStraight2(-500);
+driveStraight2(-1800); //-500
 
 
 

@@ -136,6 +136,7 @@ int angle = 0;
 bool rachetToggle = false;
 
 bool wingsToggle = false;
+bool wingsToggle2 = false;
 bool awpToggle = false;
 bool liftToggle = true;
 bool liftToggle90 = true;
@@ -205,7 +206,7 @@ void opcontrol() {
       } 
       if (time % 50 == 0){
         setConstants(0.075, 0, 0.1);
-        con.print(2, 0, "Temp: %f        ", float(mrpm)); // //imu.get_heading()
+        con.print(2, 0, "Temp: %f        ", float(CATA.get_temperature())); // //imu.get_heading() //mrpm
       } 
 
 
@@ -528,11 +529,19 @@ CATA.set_brake_mode(MOTOR_BRAKE_COAST);
       // } else {
       //   wingsToggle = true;
       // }
-      wingsToggle = !wingsToggle;
+      /////////////////////////////////////////////////////
+      wingsToggle2 = !wingsToggle2;
+      wingsToggle = false;
       speed = 69;
+      ///////////////////////////////////////////////////////////////////
       //CATA.move_velocity(480);
        up = false;
-    } else if (con.get_digital(E_CONTROLLER_DIGITAL_L2)) {
+    } 
+    //else if (NEWL2){
+    // wingsToggle2 = !wingsToggle2;
+    // wingsToggle = false;
+    // } 
+    else if (con.get_digital(E_CONTROLLER_DIGITAL_L2)) {
 			//
       up = false;
       cataToggle = true;
@@ -564,7 +573,7 @@ if(ccon){
 } else {
     if(cataToggle2 || cataToggle){
     //CATA.move(127);
-    CATA.move_velocity(75); //67
+    CATA.move_velocity(85); //67
   } else {
      CATA.move(0);
     //CATA.move_velocity(0);
@@ -576,13 +585,36 @@ if(ccon){
     // if(con.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)){
     //   wingsToggle = !wingsToggle;
     // }
-    if (wingsToggle == false) {
-				wing1.set_value(false);
-        wing2.set_value(false);
-			} else {
-        wing1.set_value(true);
-        wing2.set_value(true);
-			}
+
+    
+  if (wingsToggle2 == true || wingsToggle == true){
+      wing1.set_value(true); 
+  } else {
+    wing1.set_value(false);
+  }
+
+  if (wingsToggle2 == true && wingsToggle == false){
+    wing2.set_value(true); 
+  } else {
+    wing2.set_value(false);
+  }
+  
+
+    // if (wingsToggle2 == false) {
+		// 		wing1.set_value(false);
+    //     wing2.set_value(false);
+		// 	} else {
+    //     wing1.set_value(true);
+    //     wing2.set_value(true);
+		// 	}
+
+    //   if (wingsToggle == false) {
+		// 		wing1.set_value(false);
+    //     // wing2.set_value(false);
+		// 	} else {
+    //     wing1.set_value(true);
+    //     // wing2.set_value(true);
+		// 	}
 
 
 
@@ -591,11 +623,11 @@ if(ccon){
 		// 	rachetToggle = !rachetToggle;
 		// }
     LIFT.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-    if (rachetToggle == false) {
-				rachet.set_value(false); 
-			} else {
-        rachet.set_value(true);
-			}
+    // if (rachetToggle == false) {
+		// 		rachet.set_value(false); 
+		// 	} else {
+    //     rachet.set_value(true);
+		// 	}
 if (intakeToggle == false) {
 				intakep.set_value(false);
 			} else {
@@ -616,6 +648,8 @@ if (intakeToggle == false) {
     RM.set_brake_mode(E_MOTOR_BRAKE_HOLD);
     RB.set_brake_mode(E_MOTOR_BRAKE_HOLD);
     LIFT.set_brake_mode(E_MOTOR_BRAKE_COAST);
+    liftToggle = true;
+     liftToggle90 = true;
 			}
    
     // if (flyToggle == false) {
